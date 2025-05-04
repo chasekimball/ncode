@@ -1,1 +1,85 @@
-<h1>Hello world!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Interactive Q&A</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 2em auto;
+      padding: 0 1em;
+      line-height: 1.5;
+    }
+    #response { margin-top: 1em; color: #444; }
+    input, button {
+      font-size: 1em;
+      padding: 0.5em;
+    }
+    button { margin-left: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>Quick Chat</h1>
+  <div id="question">Loading…</div>
+  <div>
+    <input type="text" id="answer" autocomplete="off" />
+    <button id="submit">Submit</button>
+  </div>
+  <div id="response"></div>
+
+  <script>
+    // 1) Define your list of questions
+    const questions = [
+      "What’s your name?",
+      "How are you doing today?",
+      "What’s your favorite hobby?"
+    ];
+
+    // 2) Keep track of which question we’re on
+    let current = 0;
+
+    const qEl      = document.getElementById("question");
+    const ansEl    = document.getElementById("answer");
+    const btnEl    = document.getElementById("submit");
+    const respEl   = document.getElementById("response");
+
+    // Initialize first question
+    qEl.textContent = questions[current];
+    ansEl.focus();
+
+    btnEl.addEventListener("click", () => {
+      const answer = ansEl.value.trim();
+      if (!answer) return;        // ignore empty submissions
+
+      // 3) Give a simple response based on which question
+      if (current === 0) {
+        respEl.textContent = `Nice to meet you, ${answer}!`;
+      } else if (current === 1) {
+        respEl.textContent = `Glad to hear you’re feeling ${answer}!`;
+      } else if (current === 2) {
+        respEl.textContent = `Ooh, ${answer} sounds fun!`;
+      }
+
+      current++;
+      ansEl.value = "";
+
+      // 4) Move on (or finish)
+      if (current < questions.length) {
+        setTimeout(() => {
+          respEl.textContent = "";
+          qEl.textContent     = questions[current];
+          ansEl.focus();
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          qEl.textContent   = "Thanks for chatting!";
+          ansEl.remove();
+          btnEl.remove();
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>
