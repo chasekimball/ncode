@@ -11,7 +11,14 @@
       margin: 2em auto;
       padding: 0 1em;
       line-height: 1.5;
+      text-align: center;
     }
+    #greeting {
+      font-size: 1.5em;
+      color: #2c3e50;
+      margin-bottom: 1em;
+    }
+    #question { font-weight: bold; }
     #response { margin-top: 1em; color: #444; }
     input, button {
       font-size: 1em;
@@ -21,6 +28,8 @@
   </style>
 </head>
 <body>
+  <div id="greeting">🎉 Hey there! Welcome to our chat adventure! 🎉</div>
+
   <h1>Quick Chat</h1>
   <div id="question">Loading…</div>
   <div>
@@ -30,42 +39,47 @@
   <div id="response"></div>
 
   <script>
-    // 1) Define your list of questions
     const questions = [
       "What’s your name?",
       "How are you doing today?",
       "What’s your favorite hobby?"
     ];
 
-    // 2) Keep track of which question we’re on
+    let userName  = "";
+    let userMood  = "";
+    let userHobby = "";
+
     let current = 0;
 
-    const qEl      = document.getElementById("question");
-    const ansEl    = document.getElementById("answer");
-    const btnEl    = document.getElementById("submit");
-    const respEl   = document.getElementById("response");
+    const greetingEl = document.getElementById("greeting");
+    const qEl         = document.getElementById("question");
+    const ansEl       = document.getElementById("answer");
+    const btnEl       = document.getElementById("submit");
+    const respEl      = document.getElementById("response");
 
-    // Initialize first question
+    // Show first question immediately under the greeting
     qEl.textContent = questions[current];
     ansEl.focus();
 
     btnEl.addEventListener("click", () => {
       const answer = ansEl.value.trim();
-      if (!answer) return;        // ignore empty submissions
+      if (!answer) return;
 
-      // 3) Give a simple response based on which question
+      // Store and respond
       if (current === 0) {
-        respEl.textContent = `Nice to meet you, ${answer}!`;
+        userName = answer;
+        respEl.textContent = `Nice to meet you, ${userName}!`;
       } else if (current === 1) {
-        respEl.textContent = `Glad to hear you’re feeling ${answer}!`;
+        userMood = answer;
+        respEl.textContent = `Glad to hear you’re feeling ${userMood}!`;
       } else if (current === 2) {
-        respEl.textContent = `Ooh, ${answer} sounds fun!`;
+        userHobby = answer;
+        respEl.textContent = `Ooh, ${userHobby} sounds fun!`;
       }
 
       current++;
       ansEl.value = "";
 
-      // 4) Move on (or finish)
       if (current < questions.length) {
         setTimeout(() => {
           respEl.textContent = "";
@@ -74,9 +88,11 @@
         }, 1500);
       } else {
         setTimeout(() => {
-          qEl.textContent   = "Thanks for chatting!";
+          qEl.textContent     = "Thanks for chatting!";
           ansEl.remove();
           btnEl.remove();
+          // Now you can still reference userName, userMood, userHobby
+          console.log({ userName, userMood, userHobby });
         }, 1500);
       }
     });
